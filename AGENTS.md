@@ -152,8 +152,12 @@ should grow with events, not with traffic.
 
 ## Commits and pull requests
 
-PRs are merged with a merge commit, not squashed, so each commit lands on
-`main` as written and the PR description becomes the merge commit message.
+PRs are merged with a merge commit, not squashed. Each commit lands on
+`main` as written, and the PR title and description become the merge
+commit message. `git log --first-parent main` shows one merge commit per
+PR, and `git revert -m 1` reverts a PR as a unit. A commit message and a
+PR description therefore have different readers, and each one is written
+for its own reader.
 
 ### Git safety
 
@@ -193,16 +197,40 @@ PRs are merged with a merge commit, not squashed, so each commit lands on
 - Every commit builds and passes tests, so `git bisect` works.
 - The message says what the commit changes and why, for that commit only.
   Subject line in the imperative, under ~72 characters; wrap the body at 72.
+- Write the message for a reader who reaches the commit from `git blame`
+  or `git bisect` and has not seen the PR. The body explains the change at
+  the level of the code: what was wrong or missing, what the commit does
+  about it, and why that way.
 - Address review feedback with `git commit --fixup <sha>` and fold it in with
   `git rebase -i --autosquash` before merging. No "address review" or "fix
   typo" commits on the final branch.
 
 ### PR descriptions
 
-The description is the merge commit message, so write it for `git log`
-readers, not just reviewers:
+The description is the merge commit message. Write it for a reader of
+`git log --first-parent main`, who sees one entry per PR and does not open
+the commits.
 
-- Title: a short summary of the whole change.
-- Body: the overall why and what, and anything that spans commits. Don't
-  repeat each commit's message.
-- No checklists nor review chatter
+- Title: the whole change, in the imperative, under ~72 characters.
+- Body: five labeled parts, in this order. Each label stands on its own
+  line as plain text, followed by one or more paragraphs.
+  1. `Problem`: what is wrong or missing today, and why it matters. Start
+     from the symptom, not from the code.
+  2. `Solution`: what is different once the PR is merged, as a reader of
+     `main` sees it. For several commits, the overall shape. For one
+     commit, a sentence or two that does not repeat the commit body.
+  3. `Operator-visible changes`: config fields, environment variables,
+     chart values, CRD fields, proto messages, metric names, and what an
+     operator has to do about them.
+  4. `Validation`: what you ran beyond CI, against what, and what you saw.
+  5. `Issues`: `Closes #N` for each issue the PR closes, and work that the
+     PR leaves out.
+- A part that does not apply keeps its label and says in one sentence
+  why it does not apply. "None. The change touches only Rust internals"
+  tells the reader that the author checked.
+- Don't repeat the commits' messages. The commits hold the code-level
+  reasoning. A PR with one commit still gets a merge commit, and its body
+  is a shorter summary of that commit, not a copy.
+- No markdown headings, bold, checklists or review chatter. The body is a
+  commit message, and markdown means nothing in `git log`.
+  CONTRIBUTING.md shows two filled-in examples.
