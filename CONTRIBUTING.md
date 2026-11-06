@@ -4,6 +4,17 @@ These guidelines apply to everyone, whether you write the code yourself or
 with a coding agent. Agents get the same rules, in more detail, from
 [AGENTS.md](AGENTS.md).
 
+## Issues
+
+Open a bug report or a feature request through the issue forms. The bug
+form asks what happened, what you expected and how to reproduce it,
+because a bug report is a claim until someone else sees the failure.
+When you found the bug by reading the code, name the code path under
+"Where in the code". The feature form asks why, what Kinference does
+today, what it would do instead, and what is observable once the change
+ships. For a question, use
+[GitHub discussions](https://github.com/Kinference-AI/kinference/discussions).
+
 ## Architecture
 
 [ARCHITECTURE.md](ARCHITECTURE.md) is the map of the server: how the code is
