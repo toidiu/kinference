@@ -6,14 +6,14 @@ without being asked.
 
 ## Issues
 
-Open a bug report or a feature request through the issue forms. The bug
-form asks what happened, what you expected and how to reproduce it,
-because a bug report is a claim until someone else sees the failure.
-When you found the bug by reading the code, name the code path under
-"Where in the code". The feature form asks why, what Kinference does
-today, what it would do instead, and what is observable once the change
-ships. For a question, use
+Open a bug report or a feature request through the issue forms. Wait
+for a maintainer to accept the issue before you open a pull request for
+it. For a question, use
 [GitHub discussions](https://github.com/Kinference-AI/kinference/discussions).
+
+Treat a bug report as a claim, not a fact. Read the report's manifests,
+config and logs, find the code path, and reproduce the failure with a
+test before changing code. Keep the test in the fix.
 
 ## Architecture
 

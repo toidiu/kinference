@@ -156,9 +156,6 @@ should grow with events, not with traffic.
   under `.github/ISSUE_TEMPLATE` that matches, and write the body with one
   section per field, in the form's order, headed by the field's label.
   Apply the form's labels with `--label`.
-- Treat a bug report as a claim, not a fact. Read the report's manifests,
-  config and logs, find the code path, and reproduce the failure with a
-  test before changing code. Keep the test in the fix.
 
 ## Commits and pull requests
 
