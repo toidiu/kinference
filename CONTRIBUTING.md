@@ -1,8 +1,8 @@
 # Contributing
 
 These guidelines apply to everyone, whether you write the code yourself or
-with a coding agent. Agents get the same rules, in more detail, from
-[AGENTS.md](AGENTS.md).
+with a coding agent. The policy at the end says what an agent may do
+without being asked.
 
 ## Issues
 
@@ -56,9 +56,16 @@ requests" below says what goes in each.
   or `git bisect` and has never seen the PR. Explain the change at the
   level of the code: what was wrong or missing, what the commit does about
   it, and why that way.
-- Address review feedback with `git commit --fixup <sha>`, then run
-  `git rebase -i --autosquash` before merging. The final branch shouldn't
-  contain "address review" or "fix typo" commits.
+- A branch's history goes through three phases:
+  1. Until the first review, shape the branch as the change needs:
+     amend, rebase and force-push it.
+  2. Once a reviewer has commented, don't rewrite history until the
+     review is done. Address review feedback with
+     `git commit --fixup <sha>` or with new commits. Each fixup shows
+     the reviewer one change on its own.
+  3. Before the merge, fold the fixups with `git rebase -i --autosquash`
+     and force-push once. The final branch holds no "address review" or
+     "fix typo" commits.
 
 ## Sign your commits
 
@@ -94,7 +101,8 @@ unit, so the merge commit is the record of what the PR delivered.
   5. `Issues`: `Closes #N` for each issue the PR closes, and work that the
      PR leaves out.
 - A part that does not apply keeps its label and says in one sentence
-  why it does not apply, so that the reader knows you checked.
+  why: "None. The change touches only Rust internals." The sentence
+  tells the reader that you checked.
 - Don't repeat the commits' messages. The commits hold the code-level
   reasoning. A PR with one commit still gets a merge commit, and its
   description is a shorter summary of that commit, not a copy.
@@ -102,7 +110,7 @@ unit, so the merge commit is the record of what the PR delivered.
   description is a commit message, and markdown means nothing in
   `git log`.
 
-A PR where every part applies:
+An example:
 
 ```
 Replace the observations CSV sink with structured tracing events
@@ -140,39 +148,6 @@ Issues
 Closes #104.
 ```
 
-A PR where some parts do not apply:
-
-```
-Give the smoke test's vLLM more memory for its KV cache
-
-Problem
-
-The ARM smoke job on main failed because the dummy vLLM pod
-crash-looped. With gpu-memory-utilization at 0.3 of a 4 GiB limit, the
-engine had about 10 MiB of headroom for its KV cache and refused to
-start.
-
-Solution
-
-Raise the fraction to 0.5, which leaves about 0.9 GiB for the cache.
-The diagnostics step also prints 200 lines of the vLLM log instead of
-50, so the root cause shows on the job page.
-
-Operator-visible changes
-
-None. The change is confined to the smoke test's manifests and the CI
-workflow, which no release ships.
-
-Validation
-
-The smoke job on both platforms covers it, and the ARM job passed on
-this branch.
-
-Issues
-
-None. The failure showed up on a main push, not in a report.
-```
-
 ### End-to-end tests
 
 The end-to-end suite runs in a separate repository and reports as the
@@ -196,6 +171,9 @@ submission thoroughly and be able to explain it.
 whether or not the contributor used generative AI or LLMs to create it.
 - A tool-assisted submission must still follow all the contribution
 guidelines above.
+- The contributor decides each git action. An agent commits, pushes or
+opens a pull request only as far as the contributor's request asks, and
+runs no destructive git command unprompted.
 
 ### Attribution and Co-Author Guidelines ###
 
